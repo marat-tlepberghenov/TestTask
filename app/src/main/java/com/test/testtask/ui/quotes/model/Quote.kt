@@ -3,12 +3,12 @@ package com.test.testtask.ui.quotes.model
 import androidx.compose.ui.graphics.Color
 
 data class Quote(
-    private val _ticker: String? = null,
-    private val _priceChangePercent: Double? = null,
-    private val _lastTradeExchange: String? = null,
-    private val _shareName: String? = null,
-    private val _lastTradePrice: Double? = null,
-    private val _priceChangePoint: Double? = null
+    val _ticker: String? = null,
+    val _priceChangePercent: Double? = null,
+    val _lastTradeExchange: String? = null,
+    val _shareName: String? = null,
+    val _lastTradePrice: Double? = null,
+    val _priceChangePoint: Double? = null
 ) {
     val ticker = _ticker ?: EMPTY
     val priceChangePercent

@@ -15,13 +15,17 @@ import com.test.testtask.ui.quotes.model.Quote
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
-fun QuotesScreen(sharedFLow: SharedFlow<Quote>) {
+fun QuotesScreen(
+    quotesSharedFlow: SharedFlow<Quote>,
+    updateQuoteIfNeeded: (Quote?, Quote) -> Quote
+) {
     val quotes = remember { mutableStateMapOf<String, Quote>() }
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(key1 = Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            sharedFLow.collect {
-                quotes[it.ticker] = it
+            quotesSharedFlow.collect {
+                val updatedQuote = updateQuoteIfNeeded(quotes[it.ticker], it)
+                quotes[updatedQuote.ticker] = updatedQuote
             }
         }
     }

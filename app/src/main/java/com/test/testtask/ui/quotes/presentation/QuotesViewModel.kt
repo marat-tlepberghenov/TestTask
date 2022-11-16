@@ -40,13 +40,27 @@ class QuotesViewModel @Inject constructor(
                             Log.d("QuotesViewModel", "WebSocketEvent error")
                         }
                         is WebSocketEvent.Message -> {
-                            parser.getObj(event.value)?.let { quote -> _quotes.emit(quote) }
-                            Log.d("QuotesViewModel", "Quotes: $quote")
+                            parser.getObj(event.value)?.let {
+                                _quotes.emit(it)
+                                Log.d("QuotesViewModel", "Quotes: $it")
+                            }
                         }
                         is WebSocketEvent.Open -> {}
                     }
                 }
         }
+    }
+
+    fun updateQuoteIfNeeded(old: Quote?, new: Quote) : Quote {
+        if (old == null) return new
+        return old.copy(
+            _ticker = new._ticker ?: old._ticker,
+            _priceChangePercent = new._priceChangePercent ?: old._priceChangePercent,
+            _lastTradeExchange = new._lastTradeExchange ?: old._lastTradeExchange,
+            _shareName = new._shareName ?: old._shareName,
+            _lastTradePrice = new._lastTradePrice ?: old._lastTradePrice,
+            _priceChangePoint = new._priceChangePoint ?: old._priceChangePoint
+        )
     }
 }
 

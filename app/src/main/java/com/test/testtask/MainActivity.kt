@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun ScreenSetup(viewModel: QuotesViewModel) {
-        QuotesScreen(viewModel.quotes)
+        QuotesScreen(viewModel.quotes, viewModel::updateQuoteIfNeeded)
     }
 
     @Preview(showBackground = true)
