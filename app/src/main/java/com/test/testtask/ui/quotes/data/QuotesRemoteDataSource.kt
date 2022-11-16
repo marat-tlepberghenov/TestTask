@@ -8,7 +8,7 @@ class QuotesRemoteDataSource @Inject constructor(
     private val webSocketListener: AppWebSocketListener,
     private val api: QuotesApi
 ) {
-    fun getQuotes() = webSocketListener.message
+    fun getQuotes(requestMessage: String) = webSocketListener.message(requestMessage)
 
     suspend fun getTopSecurities(request: TopSecuritiesRequest) = api.getTopSecurities(request)
 }

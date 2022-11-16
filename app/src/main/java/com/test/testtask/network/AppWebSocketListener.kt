@@ -16,11 +16,10 @@ import javax.inject.Inject
 class AppWebSocketListener @Inject constructor(
     private val client: OkHttpClient,
     private val request: Request,
-    @DispatcherIO dispatcherIO: CoroutineDispatcher,
-    private val subscribeRequest: String
+    @DispatcherIO private val dispatcherIO: CoroutineDispatcher
 ) {
 
-    val message = callbackFlow {
+    fun message(requestMessage: String) = callbackFlow {
         val socket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 trySendBlocking(WebSocketEvent.Message(text))
@@ -32,7 +31,7 @@ class AppWebSocketListener @Inject constructor(
 
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 trySendBlocking(WebSocketEvent.Open(true))
-                webSocket.send(subscribeRequest)
+                webSocket.send(requestMessage)
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {

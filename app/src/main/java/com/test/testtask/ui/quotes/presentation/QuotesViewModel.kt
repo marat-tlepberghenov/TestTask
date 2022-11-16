@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.text.Typography.quote
 
 @HiltViewModel
 class QuotesViewModel @Inject constructor(
@@ -30,9 +29,10 @@ class QuotesViewModel @Inject constructor(
 
     private fun subscribeOnRealQuotes() {
         viewModelScope.launch {
-            val list = repository.getTopSecurities(TopSecuritiesRequest())
-            Log.d("QuotesViewModel", "Ticker list $list")
-            repository.getQuotes()
+            val tickers = repository.getTopSecurities(TopSecuritiesRequest())
+            Log.d("QuotesViewModel", "Tickers from response: $tickers")
+
+            repository.getQuotes(buildRequestMessage("realtimeQuotes", tickers))
                 .catch { Log.d("QuotesViewModel", "Quotes fetching error") }
                 .collect { event ->
                     when (event) {
@@ -61,6 +61,22 @@ class QuotesViewModel @Inject constructor(
             _lastTradePrice = new._lastTradePrice ?: old._lastTradePrice,
             _priceChangePoint = new._priceChangePoint ?: old._priceChangePoint
         )
+    }
+
+    private fun buildRequestMessage(subscriptionName: String, tickers: List<String>):String {
+        val tickerList = tickers.ifEmpty { QuotesRepository.defaultTopSecurities() }
+        val request = buildString {
+            append("[")
+            append("\"$subscriptionName\",")
+            append("[")
+            tickerList.forEachIndexed { index, str ->
+                append("\"$str\"")
+                if (index != tickerList.lastIndex) append(",")
+            }
+            append("]")
+            append("]")
+        }
+        return request
     }
 }
 

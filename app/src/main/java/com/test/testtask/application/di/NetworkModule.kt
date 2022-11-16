@@ -18,25 +18,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
-    @SubscribeRequest
-    @Singleton
-    @Provides
-    fun provideSubscribeRequest(): String {
-        val sharesList = QuotesRepository.getShares()
-        val request = buildString {
-            append("[")
-            append("\"realtimeQuotes\",")
-            append("[")
-            sharesList.forEachIndexed { index, str ->
-                append("\"$str\"")
-                if (index != sharesList.lastIndex) append(",")
-            }
-            append("]")
-            append("]")
-        }
-        return request
-    }
-
     @DispatcherIO
     @Singleton
     @Provides
@@ -68,8 +49,7 @@ object NetworkModule {
     fun provideAppWebSocketListener(
         okHttpClient: OkHttpClient,
         request: Request,
-        @DispatcherIO dispatcherIO: CoroutineDispatcher,
-        @SubscribeRequest subscribeRequest: String
-    ): AppWebSocketListener = AppWebSocketListener(okHttpClient, request, dispatcherIO, subscribeRequest)
+        @DispatcherIO dispatcherIO: CoroutineDispatcher
+    ): AppWebSocketListener = AppWebSocketListener(okHttpClient, request, dispatcherIO)
 
 }
