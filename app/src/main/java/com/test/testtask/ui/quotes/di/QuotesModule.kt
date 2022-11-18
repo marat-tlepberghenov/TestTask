@@ -38,7 +38,8 @@ object QuotesModuleProvide {
     fun provideQuotesRepository(
         quotesRemoteDataSource: QuotesRemoteDataSource,
         @DispatcherIO dispatcherIO: CoroutineDispatcher,
-    ): QuotesRepository = QuotesRepository(quotesRemoteDataSource, dispatcherIO)
+        parser: QuoteParser
+    ): QuotesRepository = QuotesRepository(quotesRemoteDataSource, parser, dispatcherIO)
 
     @ViewModelScoped
     @Provides

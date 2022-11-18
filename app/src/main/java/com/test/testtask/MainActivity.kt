@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.test.testtask.ui.quotes.model.Quote
 import com.test.testtask.ui.quotes.presentation.QuoteItem
 import com.test.testtask.ui.quotes.presentation.QuotesScreen
@@ -31,9 +34,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalLifecycleComposeApi::class)
     @Composable
     fun ScreenSetup(viewModel: QuotesViewModel) {
-        QuotesScreen(viewModel.quotes, viewModel::updateQuoteIfNeeded)
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        QuotesScreen(uiState)
     }
 
     @Preview(showBackground = true)
