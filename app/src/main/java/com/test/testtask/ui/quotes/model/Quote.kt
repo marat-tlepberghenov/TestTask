@@ -29,8 +29,8 @@ data class Quote(
     val priceChangePercentFontColor
         get() = when {
             _priceChangePercent == null -> Color.Transparent
-            _priceChangePercent > 0.0 -> Color.Green
-            _priceChangePercent < 0.0 -> Color.Red
+            _priceChangePercent > 0.0 -> Color(0xFF72bf46)
+            _priceChangePercent < 0.0 -> Color(0xFFfc2d55)
             else -> Color.Gray
         }
     val exchangeAndShareName: String

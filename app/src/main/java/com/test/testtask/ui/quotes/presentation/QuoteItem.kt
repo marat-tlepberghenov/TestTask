@@ -14,8 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,8 +31,8 @@ fun QuoteItem(quote: Quote) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
-            .height(48.dp)
-            .padding(4.dp)
+            .height(56.dp)
+            .padding(8.dp)
     ) {
         val (
             icon,
@@ -48,7 +46,7 @@ fun QuoteItem(quote: Quote) {
             model = "https://tradernet.ru/logos/get-logo-by-ticker?ticker=${quote.ticker.lowercase()}",
             contentDescription = "",
             modifier = Modifier
-                .size(16.dp)
+                .size(24.dp)
                 .constrainAs(icon) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -62,9 +60,9 @@ fun QuoteItem(quote: Quote) {
                     top.linkTo(icon.top)
                     bottom.linkTo(icon.bottom)
                 },
-            fontSize = 14.sp,
+            fontSize = 18.sp,
             textAlign = TextAlign.Start,
-            color = Color.Black
+            color = Color(0xFF343c44)
         )
         Text(
             text = quote.exchangeAndShareName,
@@ -73,20 +71,20 @@ fun QuoteItem(quote: Quote) {
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom)
                 },
-            fontSize = 11.sp,
+            fontSize = 12.sp,
             textAlign = TextAlign.Start,
-            color = Color.DarkGray
+            color = Color(0xFFa3a3a8)
         )
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = "",
             modifier = Modifier
                 .constrainAs(chevron) {
-                    end.linkTo(parent.end)
+                    end.linkTo(parent.end, 4.dp)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-            tint = Color.Gray
+            tint = Color(0xFFa3a3a8)
         )
         Box(
             modifier = Modifier
@@ -107,7 +105,7 @@ fun QuoteItem(quote: Quote) {
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(horizontal = 4.dp),
-                fontSize = 14.sp,
+                fontSize = 20.sp,
                 textAlign = TextAlign.Start,
                 color = quote.priceChangePercentFontColor
             )
