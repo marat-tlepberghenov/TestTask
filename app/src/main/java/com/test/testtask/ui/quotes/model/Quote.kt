@@ -8,6 +8,7 @@ data class Quote(
     val _lastTradeExchange: String? = null,
     val _shareName: String? = null,
     val _lastTradePrice: Double? = null,
+    val _previousLastTradePrice: Double? = null,
     val _priceChangePoint: Double? = null
 ) {
     val ticker = _ticker ?: EMPTY
@@ -27,11 +28,15 @@ data class Quote(
             String.format(POINT_PATTERN, _priceChangePoint)
         }
     val priceChangePercentFontColor
-        get() = when {
-            _priceChangePercent == null -> Color.Transparent
-            _priceChangePercent > 0.0 -> Color(0xFF72bf46)
-            _priceChangePercent < 0.0 -> Color(0xFFfc2d55)
-            else -> Color.Gray
+        get() = when (lastTradePriceBackground) {
+            Color(0xFF72bf46) -> Color.White
+            Color(0xFFfc2d55) -> Color.White
+            else -> when {
+                _priceChangePercent == null -> Color.Transparent
+                _priceChangePercent > 0.0 -> Color(0xFF72bf46)
+                _priceChangePercent < 0.0 -> Color(0xFFfc2d55)
+                else -> Color.Gray
+            }
         }
     val exchangeAndShareName: String
         get() {
@@ -45,6 +50,15 @@ data class Quote(
             if (lastTradePrice.isEmpty()) return priceChangePercent
             if (priceChangePoint.isEmpty()) return lastTradePrice
             return String.format(LAST_PRICE_AND_POINTS_PATTERN, lastTradePrice, priceChangePoint)
+        }
+
+    val lastTradePriceBackground: Color
+        get() = if (_lastTradePrice == null || _previousLastTradePrice == null) {
+            Color.Transparent
+        } else when {
+            _lastTradePrice > _previousLastTradePrice -> Color(0xFF72bf46)
+            _lastTradePrice < _previousLastTradePrice -> Color(0xFFfc2d55)
+            else -> Color.Transparent
         }
 
     companion object {

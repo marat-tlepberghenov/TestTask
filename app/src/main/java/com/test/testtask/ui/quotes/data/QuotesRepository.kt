@@ -48,7 +48,8 @@ class QuotesRepository @Inject constructor(
             _lastTradeExchange = current._lastTradeExchange ?: old._lastTradeExchange,
             _shareName = current._shareName ?: old._shareName,
             _lastTradePrice = current._lastTradePrice ?: old._lastTradePrice,
-            _priceChangePoint = current._priceChangePoint ?: old._priceChangePoint
+            _priceChangePoint = current._priceChangePoint ?: old._priceChangePoint,
+            _previousLastTradePrice = old._lastTradePrice
         )
     }
 

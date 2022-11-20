@@ -95,7 +95,7 @@ fun QuoteItem(quote: Quote) {
                 .wrapContentHeight()
                 .wrapContentWidth()
                 .background(
-                    color = Color.Transparent,
+                    color = quote.lastTradePriceBackground,
                     shape = RoundedCornerShape(5.dp)
                 ),
             contentAlignment = Alignment.Center
